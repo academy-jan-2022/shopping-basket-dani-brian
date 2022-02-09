@@ -25,11 +25,12 @@ class BasketRepositoryShould {
         Map<UserId, Basket> baskets = new HashMap<>();
         var basketRepository = new InMemoryBasketRepository(baskets);
         var product = new Product("The Hobbit", 5, new ProductId(10001));
+        var item = new BasketItem(product, 2);
         UserId userId = new UserId();
-        Basket basket = new Basket(userId, List.of(product));
+        Basket basket = new Basket(userId, List.of(item));
 
         basketRepository.add(userId, product, 2);
 
-        Assertions.assertEquals(basket, baskets.get(userId));
+        Assertions.assertTrue(basket.equals(baskets.get(userId)));
     }
 }

@@ -1,5 +1,6 @@
 package codurance;
 
+import java.util.List;
 import java.util.Map;
 
 public class InMemoryBasketRepository implements BasketRepository {
@@ -10,8 +11,10 @@ public class InMemoryBasketRepository implements BasketRepository {
     }
 
     @Override
-    public void add(UserId userId, Product productId, int quantity) {
-        baskets.put(userId,new Basket(null,null));
+    public void add(UserId userId, Product product, int quantity) {
+        BasketItem basketItem = new BasketItem(product, quantity);
+        List<BasketItem> items = List.of(basketItem);
+        baskets.put(userId,new Basket(userId, items));
     }
 
     @Override
