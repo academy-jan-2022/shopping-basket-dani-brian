@@ -12,9 +12,14 @@ public class InMemoryBasketRepository implements BasketRepository {
 
     @Override
     public void add(UserId userId, Product product, int quantity) {
-        BasketItem basketItem = new BasketItem(product, quantity);
-        List<BasketItem> items = List.of(basketItem);
-        baskets.put(userId,new Basket(userId, items));
+        if (baskets.containsKey(userId)) {
+            Basket oldBasket = baskets.get(userId);
+            oldBasket.addProduct(product, quantity);
+        } else {
+            BasketItem basketItem = new BasketItem(product, quantity);
+            List<BasketItem> items = List.of(basketItem);
+            baskets.put(userId, new Basket(userId, items));
+        }
     }
 
     @Override

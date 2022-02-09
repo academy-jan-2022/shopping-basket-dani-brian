@@ -3,7 +3,7 @@ package codurance;
 import java.util.List;
 import java.util.Objects;
 
-public final class Basket {
+public class Basket {
     private UserId userId;
     private List<BasketItem> basketItems;
 
@@ -36,5 +36,8 @@ public final class Basket {
     @Override
     public int hashCode() {
         return Objects.hash(userId, basketItems);
+    }
+
+    public void addProduct(Product product, int quantity) {
     }
 }
