@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -32,7 +33,7 @@ class ShoppingBasketServiceShould {
         ArgumentCaptor<Basket> capturedBasket = ArgumentCaptor.forClass(Basket.class);
         verify(basketRepository).add(capturedBasket.capture());
 
-        var expectedBasket = new Basket(userId, List.of(new BasketItem(product, 1)), CURRENT_TIME);
+        var expectedBasket = new Basket(userId, new ArrayList<>(List.of(new BasketItem(product, 1))), CURRENT_TIME);
 
         Assertions.assertEquals(expectedBasket, capturedBasket.getValue());
     }

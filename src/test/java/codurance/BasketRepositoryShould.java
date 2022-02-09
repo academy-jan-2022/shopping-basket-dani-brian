@@ -3,6 +3,7 @@ package codurance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ class BasketRepositoryShould {
 
     private Basket getBasket(UserId userId, Product product, int productQuantity) {
         var item = new BasketItem(product, productQuantity);
-        return new Basket(userId, List.of(item), CURRENT_TIME);
+        return new Basket(userId, new ArrayList<>(List.of(item)), CURRENT_TIME);
     }
 
     @BeforeEach
@@ -57,7 +58,7 @@ class BasketRepositoryShould {
         UserId userId = new UserId();
         baskets.put(userId, mockBasket);
         var product = getProduct();
-        List<BasketItem> basketItems = List.of(new BasketItem(product, 3));
+        ArrayList<BasketItem> basketItems = new ArrayList<>(List.of(new BasketItem(product, 3)));
         var newBasket = new Basket(userId, basketItems, "");
         basketRepository.add(newBasket);
         verify(mockBasket).update(newBasket);

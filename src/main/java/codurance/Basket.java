@@ -1,17 +1,14 @@
 package codurance;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.UnaryOperator;
+import java.util.*;
+
 
 public class Basket {
     private final String currentTime;
     private UserId userId;
-    private List<BasketItem> basketItems;
+    private ArrayList<BasketItem> basketItems;
 
-    public Basket(UserId userId, List<BasketItem> basketItems, String currentTime) {
+    public Basket(UserId userId, ArrayList<BasketItem> basketItems, String currentTime) {
         this.userId = userId;
         this.basketItems = basketItems;
         this.currentTime = currentTime;
@@ -87,6 +84,16 @@ public class Basket {
     }
 
     public void update(Basket newBasket) {
-        throw new UnsupportedOperationException();
+        var newItem = newBasket.basketItems.get(0);
+
+        int indexOfNewItem = basketItems.indexOf(newItem);
+
+        if (indexOfNewItem != -1) {
+            BasketItem basketItem = basketItems.get(indexOfNewItem);
+            basketItems.set(
+                indexOfNewItem,
+                new BasketItem(newItem.product(), newItem.quantity() + basketItem.quantity()));
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package codurance;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingBasketService {
@@ -17,7 +18,7 @@ public class ShoppingBasketService {
     public void addItem(UserId userId, ProductId productId, int quantity) {
         var product = productRepository.getById(productId);
         BasketItem basketItem = new BasketItem(product, quantity);
-        var basket = new Basket(userId, List.of(basketItem), timeProvider.now());
+        var basket = new Basket(userId, new ArrayList<>(List.of(basketItem)), timeProvider.now());
         basketRepository.add(basket);
     }
 
