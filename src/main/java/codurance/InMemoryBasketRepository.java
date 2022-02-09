@@ -24,6 +24,6 @@ public class InMemoryBasketRepository implements BasketRepository {
 
     @Override
     public Basket basketFor(UserId userId) {
-        throw new UnsupportedOperationException();
+        return baskets.get(userId);
     }
 }
