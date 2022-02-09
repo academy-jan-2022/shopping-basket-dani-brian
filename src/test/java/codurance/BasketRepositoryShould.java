@@ -31,6 +31,6 @@ class BasketRepositoryShould {
 
         basketRepository.add(userId, product, 2);
 
-        Assertions.assertTrue(basket.equals(baskets.get(userId)));
+        Assertions.assertEquals(basket, baskets.get(userId));
     }
 }
