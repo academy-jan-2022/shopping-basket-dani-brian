@@ -19,24 +19,18 @@ public class Basket {
     }
 
     public int getQuantity(ProductId productId) {
-        var item = getByProduct(productId);
-
-        if (item.isPresent()) {
-            var basketItem = item.get();
-            return basketItem.quantity();
-        } else {
-            return 0;
-        }
+        return getByProductId(productId).quantity();
     }
 
     public UserId getUserId() {
         return userId;
     }
 
-    private Optional<BasketItem> getByProduct(ProductId productId) {
+    private BasketItem getByProductId(ProductId productId) {
         return basketItems.stream()
             .filter(basketItem -> Objects.equals(basketItem.product().id(), productId))
-            .findFirst();
+            .toList()
+            .get(0);
     }
 
     public int getTotal() {
@@ -45,20 +39,19 @@ public class Basket {
             .reduce(0, Integer::sum);
     }
 
-    public void addProduct(Product product, int quantity) {
-        Optional<BasketItem> productExisting = getByProduct(product.id());
+    public void update(Basket newBasket) {
+        var newItem = newBasket.basketItems.get(0);
 
-        productExisting.ifPresent(
-            item -> basketItems.replaceAll(
-                basketItem -> replacleIfMatch(quantity, item, basketItem)));
+        int indexOfNewItem = basketItems.indexOf(newItem);
 
-        basketItems.add(new BasketItem(product, quantity));
-    }
-
-    private BasketItem replacleIfMatch(int quantity, BasketItem item, BasketItem basketItem) {
-        return basketItem.equals(item)
-            ? new BasketItem(basketItem.product(), basketItem.quantity() + quantity)
-            : basketItem;
+        if (indexOfNewItem != -1) {
+            BasketItem basketItem = basketItems.get(indexOfNewItem);
+            basketItems.set(
+                indexOfNewItem,
+                new BasketItem(newItem.product(), newItem.quantity() + basketItem.quantity()));
+        } else {
+            basketItems.add(newItem);
+        }
     }
 
     @Override
@@ -81,21 +74,5 @@ public class Basket {
     @Override
     public int hashCode() {
         return Objects.hash(currentTime, userId, basketItems);
-    }
-
-    public void update(Basket newBasket) {
-        var newItem = newBasket.basketItems.get(0);
-
-        int indexOfNewItem = basketItems.indexOf(newItem);
-
-        if (indexOfNewItem != -1) {
-            BasketItem basketItem = basketItems.get(indexOfNewItem);
-            basketItems.set(
-                indexOfNewItem,
-                new BasketItem(newItem.product(), newItem.quantity() + basketItem.quantity()));
-        } else {
-            basketItems.add(newItem);
-        }
-
     }
 }
