@@ -39,6 +39,17 @@ class BasketShould {
     }
 
     @Test
+    void update_quantity_of_existing_product_in_basket() {
+        ProductId id = new ProductId(1);
+        var product = new Product("title", 5, id);
+        BasketItem basketItem = new BasketItem(product, 1);
+        var basket = new Basket(new UserId(), new ArrayList<>(List.of(basketItem)), "");
+        basket.addProduct(product, 1);
+
+        Assertions.assertEquals(2, basket.getQuantity(id));
+    }
+
+    @Test
     void get_total_amount() {
         BasketItem basketItem1 = new BasketItem(new Product("1", 5, new ProductId(100012)), 10);
         BasketItem basketItem2 = new BasketItem(new Product("2", 7, new ProductId(100013)), 10);
