@@ -3,41 +3,48 @@ package codurance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class BasketRepositoryShould {
 
-    public static final String CURRENT_TIME = "2022-02-14";
+    public static final String CURRENT_DATE = "2022-02-14";
     private Map<UserId, Basket> baskets;
     private InMemoryBasketRepository basketRepository;
     private Basket mockBasket;
+    private Logger mockLogger;
+    private TimeProvider mockTimeProvider;
+    private UUID userId;
 
     private Basket getBasket(UserId userId, Product product, int productQuantity) {
         var item = new BasketItem(product, productQuantity);
-        return new Basket(userId, new ArrayList<>(List.of(item)), CURRENT_TIME);
+        return new Basket(userId, new ArrayList<>(List.of(item)), CURRENT_DATE);
     }
 
     @BeforeEach
     void setUp() {
         baskets = new HashMap<>();
-        TimeProvider timeProviderMock = mock(TimeProvider.class);
-        when(timeProviderMock.now()).thenReturn(CURRENT_TIME);
+        mockTimeProvider = mock(TimeProvider.class);
+        when(mockTimeProvider.now()).thenReturn(CURRENT_DATE);
         mockBasket = mock(Basket.class);
+        mockLogger = mock(Logger.class);
+        userId = new UserId().uuid();
 
-        basketRepository = new InMemoryBasketRepository(baskets, timeProviderMock);
+        basketRepository = new InMemoryBasketRepository(baskets, mockLogger);
     }
 
     @Test
     void add_basket_to_map() {
         basketRepository.add(mockBasket);
-
         assertEquals(1, baskets.entrySet().size());
+    }
+
+    @Test
+    void logger_is_called_when_basket_is_created() {
+        basketRepository.add(mockBasket);
+        verify(mockLogger).print("[BASKET CREATED]: Created[" + CURRENT_DATE + "], User[" + userId + "]");
     }
 
     private Product getProduct() {

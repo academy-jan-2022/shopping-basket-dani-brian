@@ -1,16 +1,14 @@
 package codurance;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class InMemoryBasketRepository implements BasketRepository {
     private final Map<UserId, Basket> baskets;
-    private final TimeProvider timeProvider;
+    private final Logger logger;
 
-    public InMemoryBasketRepository(Map<UserId, Basket> baskets, TimeProvider timeProvider) {
+    public InMemoryBasketRepository(Map<UserId, Basket> baskets, Logger logger) {
         this.baskets = baskets;
-        this.timeProvider = timeProvider;
+        this.logger = logger;
     }
 
     @Override

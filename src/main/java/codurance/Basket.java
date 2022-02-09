@@ -40,17 +40,17 @@ public class Basket {
     }
 
     public void update(Basket newBasket) {
-        var newItem = newBasket.basketItems.get(0);
+        var newBasketItem = newBasket.basketItems.get(0);
 
-        int indexOfNewItem = basketItems.indexOf(newItem);
+        int indexOfItem = basketItems.indexOf(newBasketItem);
 
-        if (indexOfNewItem != -1) {
-            BasketItem basketItem = basketItems.get(indexOfNewItem);
+        if (indexOfItem != -1) {
+            BasketItem previousBasketItem = basketItems.get(indexOfItem);
             basketItems.set(
-                indexOfNewItem,
-                new BasketItem(newItem.product(), newItem.quantity() + basketItem.quantity()));
+                indexOfItem,
+                new BasketItem(newBasketItem.product(), newBasketItem.quantity() + previousBasketItem.quantity()));
         } else {
-            basketItems.add(newItem);
+            basketItems.add(newBasketItem);
         }
     }
 
