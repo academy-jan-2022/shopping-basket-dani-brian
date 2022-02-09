@@ -55,7 +55,6 @@ class BasketRepositoryShould {
 
     @Test
     void add_multiple_items_to_one_basket() {
-
         var product = getProduct();
         UserId userId = new UserId();
 
@@ -79,7 +78,6 @@ class BasketRepositoryShould {
 
     @Test
     void create_one_basket_per_user() {
-
         var product = getProduct();
 
         UserId user1 = new UserId();
@@ -104,9 +102,6 @@ class BasketRepositoryShould {
 
     @Test
     void create_basket_at_current_time() {
-
-
-
         UserId userId = new UserId();
 
         var basket = getBasket(userId, getProduct(), 1);
