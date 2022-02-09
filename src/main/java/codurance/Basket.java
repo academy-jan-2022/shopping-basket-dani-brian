@@ -1,6 +1,12 @@
 package codurance;
 
+import java.util.List;
+
 public class Basket {
+    public Basket(UserId userId, List<Product> product) {
+
+    }
+
     public String getDate() {
         throw new UnsupportedOperationException();
     }

@@ -2,13 +2,15 @@ package codurance;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AcceptanceTest {
 
     @Test
     void should_add_items_to_shopping_basket() {
-        var shoppingBasketService = new ShoppingBasketService(new InMemoryProductRepository(), new InMemoryBasketRepository());
+        var shoppingBasketService = new ShoppingBasketService(new InMemoryProductRepository(), new InMemoryBasketRepository(new HashMap<>()));
 
         UserId user = new UserId();
 

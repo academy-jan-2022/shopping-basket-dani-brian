@@ -1,13 +1,35 @@
 package codurance;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class BasketRepositoryShould {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+class BasketRepositoryShould {
+
     @Test
-    void add_item_to_basket() {
-        var basketRepository = new InMemoryBasketRepository();
+    void add_basket_to_map() {
+        Map<UserId, Basket> baskets = new HashMap<>();
+        var basketRepository = new InMemoryBasketRepository(baskets);
         var product = new Product("The Hobbit", 5, new ProductId(10001));
         UserId userId = new UserId();
         basketRepository.add(userId, product, 2);
-        var basket = basketRepository.basketFor(userId);
+
+        Assertions.assertEquals(1, baskets.entrySet().size());
+    }
+
+    @Test
+    void should_add_correct_basket() {
+        Map<UserId, Basket> baskets = new HashMap<>();
+        var basketRepository = new InMemoryBasketRepository(baskets);
+        var product = new Product("The Hobbit", 5, new ProductId(10001));
+        UserId userId = new UserId();
+        Basket basket = new Basket(userId, List.of(product));
+
+        basketRepository.add(userId, product, 2);
+
+        Assertions.assertEquals(basket, baskets.get(userId));
     }
 }
