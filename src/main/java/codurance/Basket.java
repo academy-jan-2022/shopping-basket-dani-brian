@@ -93,6 +93,8 @@ public class Basket {
             basketItems.set(
                 indexOfNewItem,
                 new BasketItem(newItem.product(), newItem.quantity() + basketItem.quantity()));
+        } else {
+            basketItems.add(newItem);
         }
 
     }
