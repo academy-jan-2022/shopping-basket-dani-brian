@@ -35,6 +35,15 @@ public class Basket {
     }
 
     @Override
+    public String toString() {
+        return "Basket{" +
+            "currentTime='" + currentTime + '\'' +
+            ", userId=" + userId +
+            ", basketItems=" + basketItems +
+            '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(currentTime, userId, basketItems);
     }

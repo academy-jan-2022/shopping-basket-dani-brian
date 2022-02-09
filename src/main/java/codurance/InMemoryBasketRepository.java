@@ -5,9 +5,11 @@ import java.util.Map;
 
 public class InMemoryBasketRepository implements BasketRepository {
     private final Map<UserId, Basket> baskets;
+    private final TimeProvider timeProvider;
 
     public InMemoryBasketRepository(Map<UserId, Basket> baskets, TimeProvider timeProvider) {
         this.baskets = baskets;
+        this.timeProvider = timeProvider;
     }
 
     @Override
@@ -18,8 +20,7 @@ public class InMemoryBasketRepository implements BasketRepository {
         } else {
             BasketItem basketItem = new BasketItem(product, quantity);
             List<BasketItem> items = List.of(basketItem);
-            var currentTime = "";
-            baskets.put(userId, new Basket(userId, items, currentTime));
+            baskets.put(userId, new Basket(userId, items, timeProvider.now()));
         }
     }
 

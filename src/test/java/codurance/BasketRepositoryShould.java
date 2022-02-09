@@ -1,5 +1,6 @@
 package codurance;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -7,42 +8,57 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class BasketRepositoryShould {
 
+    public static final String CURRENT_TIME = "2022-02-14";
+    private Map<UserId, Basket> baskets;
+    private InMemoryBasketRepository basketRepository;
+    private TimeProvider timeProviderMock;
+
+    @BeforeEach
+    void setUp() {
+        baskets = new HashMap<>();
+        timeProviderMock = mock(TimeProvider.class);
+        when(timeProviderMock.now()).thenReturn(CURRENT_TIME);
+
+        basketRepository = new InMemoryBasketRepository(baskets,timeProviderMock);
+    }
+
     @Test
     void add_basket_to_map() {
-        Map<UserId, Basket> baskets = new HashMap<>();
-        var basketRepository = new InMemoryBasketRepository(baskets, new TimeProvider());
-        var product = new Product("The Hobbit", 5, new ProductId(10001));
         UserId userId = new UserId();
-        basketRepository.add(userId, product, 2);
+        basketRepository.add(userId, getProduct(), 2);
 
         assertEquals(1, baskets.entrySet().size());
     }
 
+    private Product getProduct() {
+        return new Product("The Hobbit", 5, new ProductId(10001));
+    }
+
     @Test
     void should_add_correct_basket() {
-        Map<UserId, Basket> baskets = new HashMap<>();
-        var basketRepository = new InMemoryBasketRepository(baskets, new TimeProvider());
-        var product = new Product("The Hobbit", 5, new ProductId(10001));
-        var item = new BasketItem(product, 2);
         UserId userId = new UserId();
-        Basket basket = new Basket(userId, List.of(item), "");
+        Basket basket = getBasket(userId, getProduct(), 2);
 
-        basketRepository.add(userId, product, 2);
+        basketRepository.add(userId, getProduct(), 2);
 
         assertEquals(basket, baskets.get(userId));
     }
 
+    private Basket getBasket(UserId userId, Product product, int productQuantity) {
+        var item = new BasketItem(product, productQuantity);
+        return new Basket(userId, List.of(item), CURRENT_TIME);
+    }
+
     @Test
     void add_multiple_items_to_one_basket() {
-        Map<UserId, Basket> baskets = new HashMap<>();
-        var basketRepository = new InMemoryBasketRepository(baskets, new TimeProvider());
-        var product = new Product("The Hobbit", 5, new ProductId(10001));
+
+        var product = getProduct();
         UserId userId = new UserId();
+
         basketRepository.add(userId, product, 2);
         basketRepository.add(userId, product, 3);
 
@@ -51,15 +67,10 @@ class BasketRepositoryShould {
 
     @Test
     void update_existing_basket() {
-        Map<UserId, Basket> baskets = new HashMap<>();
         Basket basket = mock(Basket.class);
-
         UserId userId = new UserId();
         baskets.put(userId, basket);
-
-        var basketRepository = new InMemoryBasketRepository(baskets, new TimeProvider());
-        ProductId productId = new ProductId(10001);
-        var product = new Product("The Hobbit", 5, productId);
+        var product = getProduct();
 
         basketRepository.add(userId, product, 3);
 
@@ -68,11 +79,8 @@ class BasketRepositoryShould {
 
     @Test
     void create_one_basket_per_user() {
-        Map<UserId, Basket> baskets = new HashMap<>();
-        var basketRepository = new InMemoryBasketRepository(baskets, new TimeProvider());
 
-        ProductId productId = new ProductId(10001);
-        var product = new Product("The Hobbit", 5, productId);
+        var product = getProduct();
 
         UserId user1 = new UserId();
         UserId user2 = new UserId();
@@ -85,11 +93,10 @@ class BasketRepositoryShould {
 
     @Test
     void get_basket_for_current_user() {
-        Map<UserId, Basket> baskets = new HashMap<>();
-        var basketRepository = new InMemoryBasketRepository(baskets, new TimeProvider());
-
         UserId userId = new UserId();
+
         var basket = mock(Basket.class);
+
         baskets.put(userId, basket);
 
         assertEquals(basket, basketRepository.basketFor(userId));
@@ -97,18 +104,17 @@ class BasketRepositoryShould {
 
     @Test
     void create_basket_at_current_time() {
-        Map<UserId, Basket> baskets = new HashMap<>();
-        TimeProvider timeProviderMock = mock(TimeProvider.class);
-        var basketRepository = new InMemoryBasketRepository(baskets, timeProviderMock);
-        var currentTime = "2022-02-14";
-        UserId userId = new UserId();
-        Product product = new Product("", 0, new ProductId(1));
-        var basketItem = new BasketItem(product, 1);
-        List<BasketItem> basketItems = List.of(basketItem);
-        basketRepository.add( userId, product, 1);
 
-        var basket = new Basket(userId, basketItems, currentTime);
+
+
+        UserId userId = new UserId();
+
+        var basket = getBasket(userId, getProduct(), 1);
+
+        basketRepository.add(userId, getProduct(), 1);
 
         assertEquals(basket, basketRepository.basketFor(userId));
     }
+
+
 }
