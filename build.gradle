@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'com.adarshr.test-logger' version '3.1.0'
+}
+
+defaultTasks 'clean', 'test'
+
+group = 'codurance'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+wrapper {
+    gradleVersion = '7.3.3'
+    distributionType = 'BIN'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+clean {
+    doFirst {
+        delete 'out'
+    }
+}
