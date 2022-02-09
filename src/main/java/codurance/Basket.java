@@ -2,6 +2,7 @@ package codurance;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 public class Basket {
     private final String currentTime;
@@ -32,7 +33,9 @@ public class Basket {
     }
 
     public int getTotal() {
-        throw new UnsupportedOperationException();
+        return basketItems.stream()
+            .map(basketItem -> basketItem.quantity() * basketItem.product().price())
+            .reduce(0, Integer::sum);
     }
 
     public void addProduct(Product product, int quantity) {
