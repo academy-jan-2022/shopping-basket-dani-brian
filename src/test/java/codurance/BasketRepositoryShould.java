@@ -15,22 +15,17 @@ class BasketRepositoryShould {
     private InMemoryBasketRepository basketRepository;
     private Basket mockBasket;
     private Logger mockLogger;
-    private TimeProvider mockTimeProvider;
-    private UUID userId;
-
-    private Basket getBasket(UserId userId, Product product, int productQuantity) {
-        var item = new BasketItem(product, productQuantity);
-        return new Basket(userId, new ArrayList<>(List.of(item)), CURRENT_DATE);
-    }
+    private UserId userId;
 
     @BeforeEach
     void setUp() {
         baskets = new HashMap<>();
-        mockTimeProvider = mock(TimeProvider.class);
-        when(mockTimeProvider.now()).thenReturn(CURRENT_DATE);
+        userId = new UserId();
+
         mockBasket = mock(Basket.class);
+        when(mockBasket.getUserId()).thenReturn(userId);
+        when(mockBasket.getDate()).thenReturn(CURRENT_DATE);
         mockLogger = mock(Logger.class);
-        userId = new UserId().uuid();
 
         basketRepository = new InMemoryBasketRepository(baskets, mockLogger);
     }
@@ -44,7 +39,17 @@ class BasketRepositoryShould {
     @Test
     void logger_is_called_when_basket_is_created() {
         basketRepository.add(mockBasket);
-        verify(mockLogger).print("[BASKET CREATED]: Created[" + CURRENT_DATE + "], User[" + userId + "]");
+        verify(mockLogger).print("[BASKET CREATED]: Created[" + CURRENT_DATE + "], User[" + userId.uuid() + "]");
+    }
+
+    @Test
+    void logger_is_called_when_first_product_is_added() {
+        String title = "happy liars";
+        var basketItem = new BasketItem(new Product(title, 20, new ProductId(1)), 2);
+        var basket = new Basket(userId, new ArrayList<>(List.of(basketItem)), CURRENT_DATE);
+        basketRepository.add(basket);
+
+        verify(mockLogger).print("[ITEM ADDED TO SHOPPING CART]: Added[" + CURRENT_DATE + "], User[" + userId.uuid() + "], Product[happy liars], Quantity[2], Price[<£20.00>]");
     }
 
     private Product getProduct() {

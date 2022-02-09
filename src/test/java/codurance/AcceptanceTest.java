@@ -58,7 +58,7 @@ public class AcceptanceTest {
 
         var finalOutput = output.toString().trim();
         var expected1 = "[BASKET CREATED]: Created[" + CURRENT_DATE + "], User[]";
-        var expected2 = "[ITEM ADDED TO SHOPPING CART]: Added[" + CURRENT_DATE +"], User[], Product[The Hobbit], Quantity[2], Price[<£5.00>]\n";
+        var expected2 = "[ITEM ADDED TO SHOPPING CART]: Added[" + CURRENT_DATE +"], User[], Product[The Hobbit], Quantity[2], Price[<£5.00>]";
 
         assertEquals(expected1, finalOutput);
         assertEquals(expected2, finalOutput);

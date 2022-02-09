@@ -17,6 +17,7 @@ public class InMemoryBasketRepository implements BasketRepository {
             Basket oldBasket = baskets.get(basket.getUserId());
             oldBasket.update(basket);
         } else {
+            logger.print("[BASKET CREATED]: Created[" + basket.getDate() + "], User[" + basket.getUserId().uuid() + "]");
             baskets.put(basket.getUserId(), basket);
         }
     }
