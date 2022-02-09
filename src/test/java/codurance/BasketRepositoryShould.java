@@ -33,4 +33,16 @@ class BasketRepositoryShould {
 
         Assertions.assertEquals(basket, baskets.get(userId));
     }
+
+    @Test
+    void add_multiple_items_to_one_basket() {
+        Map<UserId, Basket> baskets = new HashMap<>();
+        var basketRepository = new InMemoryBasketRepository(baskets);
+        var product = new Product("The Hobbit", 5, new ProductId(10001));
+        UserId userId = new UserId();
+        basketRepository.add(userId, product, 2);
+        basketRepository.add(userId, product, 3);
+
+        Assertions.assertEquals(1, baskets.entrySet().size());
+    }
 }
