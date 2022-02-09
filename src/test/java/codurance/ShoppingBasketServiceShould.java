@@ -2,6 +2,8 @@ package codurance;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.mockito.Mockito.*;
 
 
@@ -20,7 +22,8 @@ class ShoppingBasketServiceShould {
 
         var product = productRepository.getById(productId);
         when(productRepository.getById(productId)).thenReturn(new Product("The Hobbit", 5, new ProductId(10001)));
-        verify(basketRepository).add(userId, product, 1);
+
+        verify(basketRepository).add(new Basket(userId, List.of(new BasketItem(product,1)),""));
     }
 
     @Test
