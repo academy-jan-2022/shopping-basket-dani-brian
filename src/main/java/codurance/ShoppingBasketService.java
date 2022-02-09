@@ -1,12 +1,14 @@
 package codurance;
 
 public class ShoppingBasketService {
-    public ShoppingBasketService(ProductRepository inMemoryProductRepository, BasketRepository basketRepository) {
+    private BasketRepository basketRepository;
 
+    public ShoppingBasketService(ProductRepository inMemoryProductRepository, BasketRepository basketRepository) {
+        this.basketRepository = basketRepository;
     }
 
     public void addItem(UserId userId, ProductId productId, int quantity) {
-
+        basketRepository.add(userId, productId, quantity);
     }
 
     public Basket basketFor(UserId user) {

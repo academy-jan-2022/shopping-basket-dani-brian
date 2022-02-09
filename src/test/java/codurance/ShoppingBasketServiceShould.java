@@ -19,6 +19,6 @@ class ShoppingBasketServiceShould {
         ProductId productId = new ProductId(10001);
         shoppingBasketService.addItem(userId, productId, 1);
 
-        verify(productRepository).add(userId, productId, 1);
+        verify(basketRepository).add(userId, productId, 1);
     }
 }
