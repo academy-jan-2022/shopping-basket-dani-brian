@@ -15,7 +15,7 @@ public class Basket {
     }
 
     public String getDate() {
-        throw new UnsupportedOperationException();
+        return currentTime;
     }
 
     public int getQuantity(ProductId productId) {
