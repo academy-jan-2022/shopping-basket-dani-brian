@@ -12,6 +12,15 @@ class BasketShould {
         var basket = new Basket(new UserId(), List.of(),expected);
 
         Assertions.assertEquals(expected,basket.getDate());
+    }
 
+    @Test
+    void get_quantity() {
+        int expected = 5;
+        ProductId id = new ProductId(1);
+        BasketItem basketItem = new BasketItem(new Product("title", 5, id), expected);
+        var basket = new Basket(new UserId(),List.of(basketItem),"");
+
+        Assertions.assertEquals(expected,basket.getQuantity(id));
     }
 }

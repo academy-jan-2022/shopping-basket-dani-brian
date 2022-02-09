@@ -2,15 +2,22 @@ package codurance;
 
 import org.junit.jupiter.api.Test;
 
+import java.sql.Time;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class AcceptanceTest {
 
+    public static final String CURRENT_DATE = "2022-02-14";
+
     @Test
     void should_add_items_to_shopping_basket() {
-        var shoppingBasketService = new ShoppingBasketService(new InMemoryProductRepository(), new InMemoryBasketRepository(new HashMap<>(), new TimeProvider()));
+        TimeProvider timeProvider = mock(TimeProvider.class);
+        when(timeProvider.now()).thenReturn(CURRENT_DATE);
+        var shoppingBasketService = new ShoppingBasketService(new InMemoryProductRepository(), new InMemoryBasketRepository(new HashMap<>(), timeProvider));
 
         UserId user = new UserId();
 
@@ -23,7 +30,7 @@ public class AcceptanceTest {
 
 
         Basket basket = shoppingBasketService.basketFor(user);
-        assertEquals("2022-02-14", basket.getDate());
+        assertEquals(CURRENT_DATE, basket.getDate());
 
         assertEquals(2, basket.getQuantity(hobbitProduct));
         assertEquals(5, basket.getQuantity(breakingBadProduct));
