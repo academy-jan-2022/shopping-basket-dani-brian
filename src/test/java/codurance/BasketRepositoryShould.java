@@ -15,15 +15,14 @@ class BasketRepositoryShould {
     public static final String CURRENT_TIME = "2022-02-14";
     private Map<UserId, Basket> baskets;
     private InMemoryBasketRepository basketRepository;
-    private TimeProvider timeProviderMock;
 
     @BeforeEach
     void setUp() {
         baskets = new HashMap<>();
-        timeProviderMock = mock(TimeProvider.class);
+        TimeProvider timeProviderMock = mock(TimeProvider.class);
         when(timeProviderMock.now()).thenReturn(CURRENT_TIME);
 
-        basketRepository = new InMemoryBasketRepository(baskets,timeProviderMock);
+        basketRepository = new InMemoryBasketRepository(baskets, timeProviderMock);
     }
 
     @Test
