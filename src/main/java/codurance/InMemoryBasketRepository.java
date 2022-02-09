@@ -14,20 +14,13 @@ public class InMemoryBasketRepository implements BasketRepository {
     }
 
     @Override
-    public void add(UserId userId, Product product, int quantity) {
-        if (baskets.containsKey(userId)) {
-            Basket oldBasket = baskets.get(userId);
-            oldBasket.addProduct(product, quantity);
-        } else {
-            BasketItem basketItem = new BasketItem(product, quantity);
-            List<BasketItem> items = new ArrayList<>(List.of(basketItem));
-            baskets.put(userId, new Basket(userId, items, timeProvider.now()));
-        }
-    }
-
-    @Override
     public void add(Basket basket) {
-        throw new UnsupportedOperationException();
+        if (baskets.containsKey(basket.getUserId())) {
+            Basket oldBasket = baskets.get(basket.getUserId());
+            oldBasket.update(basket);
+        } else {
+            baskets.put(basket.getUserId(), basket);
+        }
     }
 
     @Override

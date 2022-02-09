@@ -32,6 +32,10 @@ public class Basket {
         }
     }
 
+    public UserId getUserId() {
+        return userId;
+    }
+
     private Optional<BasketItem> getByProduct(ProductId productId) {
         return basketItems.stream()
             .filter(basketItem -> Objects.equals(basketItem.product().id(), productId))
@@ -80,5 +84,9 @@ public class Basket {
     @Override
     public int hashCode() {
         return Objects.hash(currentTime, userId, basketItems);
+    }
+
+    public void update(Basket newBasket) {
+        throw new UnsupportedOperationException();
     }
 }

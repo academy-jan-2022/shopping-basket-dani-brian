@@ -15,20 +15,26 @@ class BasketRepositoryShould {
     public static final String CURRENT_TIME = "2022-02-14";
     private Map<UserId, Basket> baskets;
     private InMemoryBasketRepository basketRepository;
+    private Basket mockBasket;
+
+    private Basket getBasket(UserId userId, Product product, int productQuantity) {
+        var item = new BasketItem(product, productQuantity);
+        return new Basket(userId, List.of(item), CURRENT_TIME);
+    }
 
     @BeforeEach
     void setUp() {
         baskets = new HashMap<>();
         TimeProvider timeProviderMock = mock(TimeProvider.class);
         when(timeProviderMock.now()).thenReturn(CURRENT_TIME);
+        mockBasket = mock(Basket.class);
 
         basketRepository = new InMemoryBasketRepository(baskets, timeProviderMock);
     }
 
     @Test
     void add_basket_to_map() {
-        UserId userId = new UserId();
-        basketRepository.add(userId, getProduct(), 2);
+        basketRepository.add(mockBasket);
 
         assertEquals(1, baskets.entrySet().size());
     }
@@ -40,39 +46,34 @@ class BasketRepositoryShould {
     @Test
     void should_add_correct_basket() {
         UserId userId = new UserId();
-        Basket basket = getBasket(userId, getProduct(), 2);
+        when(mockBasket.getUserId()).thenReturn(userId);
+        basketRepository.add(mockBasket);
 
-        basketRepository.add(userId, getProduct(), 2);
-
-        assertEquals(basket, baskets.get(userId));
-    }
-
-    private Basket getBasket(UserId userId, Product product, int productQuantity) {
-        var item = new BasketItem(product, productQuantity);
-        return new Basket(userId, List.of(item), CURRENT_TIME);
+        assertEquals(mockBasket, baskets.get(userId));
     }
 
     @Test
     void update_existing_basket() {
-        Basket basket = mock(Basket.class);
         UserId userId = new UserId();
-        baskets.put(userId, basket);
+        baskets.put(userId, mockBasket);
         var product = getProduct();
-
-        basketRepository.add(userId, product, 3);
-
-        verify(basket).addProduct(product, 3);
+        List<BasketItem> basketItems = List.of(new BasketItem(product, 3));
+        var newBasket = new Basket(userId, basketItems, "");
+        basketRepository.add(newBasket);
+        verify(mockBasket).update(newBasket);
     }
 
     @Test
     void create_one_basket_per_user() {
-        var product = getProduct();
+        var userId = new UserId();
+        var userId2 = new UserId();
+        Basket mockBasket2 = mock(Basket.class);
 
-        UserId user1 = new UserId();
-        UserId user2 = new UserId();
+        when(mockBasket.getUserId()).thenReturn(userId);
+        when(mockBasket2.getUserId()).thenReturn(userId2);
 
-        basketRepository.add(user1, product, 1);
-        basketRepository.add(user2, product, 1);
+        basketRepository.add(mockBasket);
+        basketRepository.add(mockBasket2);
 
         assertEquals(2, baskets.entrySet().size());
     }
@@ -80,24 +81,8 @@ class BasketRepositoryShould {
     @Test
     void get_basket_for_current_user() {
         UserId userId = new UserId();
+        baskets.put(userId, mockBasket);
 
-        var basket = mock(Basket.class);
-
-        baskets.put(userId, basket);
-
-        assertEquals(basket, basketRepository.basketFor(userId));
+        assertEquals(mockBasket, basketRepository.basketFor(userId));
     }
-
-    @Test
-    void create_basket_at_current_time() {
-        UserId userId = new UserId();
-
-        var basket = getBasket(userId, getProduct(), 1);
-
-        basketRepository.add(userId, getProduct(), 1);
-
-        assertEquals(basket, basketRepository.basketFor(userId));
-    }
-
-
 }

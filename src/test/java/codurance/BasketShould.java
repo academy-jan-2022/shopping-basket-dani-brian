@@ -44,7 +44,8 @@ class BasketShould {
         var product = new Product("title", 5, id);
         BasketItem basketItem = new BasketItem(product, 1);
         var basket = new Basket(new UserId(), new ArrayList<>(List.of(basketItem)), "");
-        basket.addProduct(product, 1);
+        var basket2 = new Basket(new UserId(), new ArrayList<>(List.of(basketItem)), "");
+        basket.update(basket2);
 
         Assertions.assertEquals(2, basket.getQuantity(id));
     }
