@@ -20,8 +20,7 @@ public class Basket {
 
     public int getQuantity(ProductId productId) {
         var item = basketItems.stream()
-            .filter(basketItem -> basketItem.product()
-                .id() == productId)
+            .filter(basketItem -> Objects.equals(basketItem.product().id(), productId))
             .findFirst();
 
         if (item.isPresent()) {
@@ -37,7 +36,7 @@ public class Basket {
     }
 
     public void addProduct(Product product, int quantity) {
-
+        basketItems.add(new BasketItem(product, quantity));
     }
 
     @Override

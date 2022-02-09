@@ -53,17 +53,6 @@ class BasketRepositoryShould {
     }
 
     @Test
-    void add_multiple_items_to_one_basket() {
-        var product = getProduct();
-        UserId userId = new UserId();
-
-        basketRepository.add(userId, product, 2);
-        basketRepository.add(userId, product, 3);
-
-        assertEquals(1, baskets.entrySet().size());
-    }
-
-    @Test
     void update_existing_basket() {
         Basket basket = mock(Basket.class);
         UserId userId = new UserId();
