@@ -24,10 +24,8 @@ public class AcceptanceTest {
         ProductId hobbitProduct = new ProductId(10002);
         shoppingBasketService.addItem(user, hobbitProduct, 2);
 
-
         ProductId breakingBadProduct = new ProductId(20110);
-        shoppingBasketService.addItem(user, hobbitProduct, 5);
-
+        shoppingBasketService.addItem(user, breakingBadProduct, 5);
 
         Basket basket = shoppingBasketService.basketFor(user);
         assertEquals(CURRENT_DATE, basket.getDate());

@@ -19,11 +19,25 @@ public class Basket {
     }
 
     public int getQuantity(ProductId productId) {
-        throw new UnsupportedOperationException();
+        var item = basketItems.stream()
+            .filter(basketItem -> basketItem.product()
+                .id() == productId)
+            .findFirst();
+
+        if (item.isPresent()) {
+            var basketItem = item.get();
+            return basketItem.quantity();
+        } else {
+            return 0;
+        }
     }
 
     public int getTotal() {
         throw new UnsupportedOperationException();
+    }
+
+    public void addProduct(Product product, int quantity) {
+
     }
 
     @Override
@@ -46,8 +60,5 @@ public class Basket {
     @Override
     public int hashCode() {
         return Objects.hash(currentTime, userId, basketItems);
-    }
-
-    public void addProduct(Product product, int quantity) {
     }
 }
