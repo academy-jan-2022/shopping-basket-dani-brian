@@ -45,4 +45,20 @@ class BasketRepositoryShould {
 
         Assertions.assertEquals(1, baskets.entrySet().size());
     }
+
+    @Test
+    void get_correctly_quantity_of_item() {
+        Map<UserId, Basket> baskets = new HashMap<>();
+        var basketRepository = new InMemoryBasketRepository(baskets);
+        ProductId productId = new ProductId(10001);
+        var product = new Product("The Hobbit", 5, productId);
+        UserId userId = new UserId();
+        basketRepository.add(userId, product, 2);
+        basketRepository.add(userId, product, 3);
+
+        var item = new BasketItem(product, 5);
+        Basket basket = new Basket(userId, List.of(item));
+
+        Assertions.assertEquals(basket,  baskets.get(userId));
+    }
 }
