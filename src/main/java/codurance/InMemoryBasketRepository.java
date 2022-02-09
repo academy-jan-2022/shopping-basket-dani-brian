@@ -8,7 +8,7 @@ public class InMemoryBasketRepository implements BasketRepository {
     private final Map<UserId, Basket> baskets;
     private final TimeProvider timeProvider;
 
-    public InMemoryBasketRepository(Map<UserId, Basket> baskets, TimeProvider timeProvider) {
+    public InMemoryBasketRepository(Map<UserId, Basket> baskets, TimeProvider timeProvider, Logger logger) {
         this.baskets = baskets;
         this.timeProvider = timeProvider;
     }

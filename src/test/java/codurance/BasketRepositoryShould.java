@@ -22,7 +22,7 @@ class BasketRepositoryShould {
         TimeProvider timeProviderMock = mock(TimeProvider.class);
         when(timeProviderMock.now()).thenReturn(CURRENT_TIME);
 
-        basketRepository = new InMemoryBasketRepository(baskets, timeProviderMock);
+        basketRepository = new InMemoryBasketRepository(baskets, timeProviderMock, new Logger());
     }
 
     @Test
