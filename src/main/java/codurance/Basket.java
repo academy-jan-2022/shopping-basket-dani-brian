@@ -2,14 +2,14 @@ package codurance;
 
 public class Basket {
     public String getDate() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public int getQuantity(ProductId hobbitProduct) {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     public int getTotal() {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 }

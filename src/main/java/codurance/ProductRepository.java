@@ -1,3 +1,5 @@
 package codurance;
 
-public interface ProductRepository { }
+public interface ProductRepository {
+    Product getById(ProductId productId);
+}
