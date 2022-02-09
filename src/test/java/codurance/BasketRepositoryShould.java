@@ -1,12 +1,12 @@
 package codurance;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -20,7 +20,7 @@ class BasketRepositoryShould {
         UserId userId = new UserId();
         basketRepository.add(userId, product, 2);
 
-        Assertions.assertEquals(1, baskets.entrySet().size());
+        assertEquals(1, baskets.entrySet().size());
     }
 
     @Test
@@ -34,7 +34,7 @@ class BasketRepositoryShould {
 
         basketRepository.add(userId, product, 2);
 
-        Assertions.assertEquals(basket, baskets.get(userId));
+        assertEquals(basket, baskets.get(userId));
     }
 
     @Test
@@ -46,7 +46,7 @@ class BasketRepositoryShould {
         basketRepository.add(userId, product, 2);
         basketRepository.add(userId, product, 3);
 
-        Assertions.assertEquals(1, baskets.entrySet().size());
+        assertEquals(1, baskets.entrySet().size());
     }
 
     @Test
@@ -80,6 +80,18 @@ class BasketRepositoryShould {
         basketRepository.add(user1, product, 1);
         basketRepository.add(user2, product, 1);
 
-        Assertions.assertEquals(2, baskets.entrySet().size());
+        assertEquals(2, baskets.entrySet().size());
+    }
+
+    @Test
+    void get_basket_for_current_user() {
+        Map<UserId, Basket> baskets = new HashMap<>();
+        var basketRepository = new InMemoryBasketRepository(baskets);
+
+        UserId userId = new UserId();
+        var basket = mock(Basket.class);
+        baskets.put(userId, basket);
+
+        assertEquals(basket, basketRepository.basketFor(userId));
     }
 }

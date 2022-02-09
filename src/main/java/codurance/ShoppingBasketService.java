@@ -15,6 +15,6 @@ public class ShoppingBasketService {
     }
 
     public Basket basketFor(UserId user) {
-        throw new UnsupportedOperationException();
+        return basketRepository.basketFor(user);
     }
 }
