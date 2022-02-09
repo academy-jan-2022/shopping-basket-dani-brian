@@ -10,7 +10,7 @@ public class AcceptanceTest {
 
     @Test
     void should_add_items_to_shopping_basket() {
-        var shoppingBasketService = new ShoppingBasketService(new InMemoryProductRepository(), new InMemoryBasketRepository(new HashMap<>()));
+        var shoppingBasketService = new ShoppingBasketService(new InMemoryProductRepository(), new InMemoryBasketRepository(new HashMap<>(), new TimeProvider()));
 
         UserId user = new UserId();
 

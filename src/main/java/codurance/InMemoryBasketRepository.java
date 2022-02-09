@@ -6,7 +6,7 @@ import java.util.Map;
 public class InMemoryBasketRepository implements BasketRepository {
     private final Map<UserId, Basket> baskets;
 
-    public InMemoryBasketRepository(Map<UserId, Basket> baskets) {
+    public InMemoryBasketRepository(Map<UserId, Basket> baskets, TimeProvider timeProvider) {
         this.baskets = baskets;
     }
 
@@ -18,7 +18,8 @@ public class InMemoryBasketRepository implements BasketRepository {
         } else {
             BasketItem basketItem = new BasketItem(product, quantity);
             List<BasketItem> items = List.of(basketItem);
-            baskets.put(userId, new Basket(userId, items));
+            var currentTime = "";
+            baskets.put(userId, new Basket(userId, items, currentTime));
         }
     }
 
