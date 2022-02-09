@@ -30,7 +30,7 @@ class ProductRepositoryShould {
 
 
     @Test
-    void get() {
+    void get_game_of_thrones() {
         var productRepository = new InMemoryProductRepository();
 
         ProductId id = new ProductId(20001);
