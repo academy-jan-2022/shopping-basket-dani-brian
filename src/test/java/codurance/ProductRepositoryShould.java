@@ -17,4 +17,16 @@ class ProductRepositoryShould {
         assertEquals(lord_of_the_rings, productRepository.getById(id));
 
     }
+
+    @Test
+    void get_the_hobbit() {
+        var productRepository = new InMemoryProductRepository();
+
+        ProductId id = new ProductId(10002);
+
+        Product the_hobbit = new Product("The Hobbit", 5, id);
+
+        assertEquals(the_hobbit, productRepository.getById(id));
+
+    }
 }
