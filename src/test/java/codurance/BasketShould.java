@@ -52,7 +52,7 @@ class BasketShould {
     @Test
     void get_total_amount() {
         BasketItem basketItem1 = new BasketItem(new Product("1", 5, new ProductId(100012)), 10);
-        BasketItem basketItem2 = new BasketItem(new Product("2", 7, new ProductId(100013)), 10);
+        BasketItem basketItem2 = new BasketItem(new Product("2", 7, new ProductId(00013)), 10);
         var basket = new Basket(new UserId(), List.of(basketItem1, basketItem2), "");
 
         Assertions.assertEquals(120, basket.getTotal());

@@ -23,12 +23,11 @@ class ShoppingBasketServiceShould {
 
         UserId userId = new UserId();
         ProductId productId = new ProductId(10001);
+        when(timeProvider.now()).thenReturn(CURRENT_TIME);
         shoppingBasketService.addItem(userId, productId, 1);
 
         var product = productRepository.getById(productId);
         when(productRepository.getById(productId)).thenReturn(new Product("The Hobbit", 5, new ProductId(10001)));
-
-        when(timeProvider.now()).thenReturn(CURRENT_TIME);
 
         ArgumentCaptor<Basket> capturedBasket = ArgumentCaptor.forClass(Basket.class);
         verify(basketRepository).add(capturedBasket.capture());
