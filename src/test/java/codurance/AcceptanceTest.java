@@ -2,7 +2,6 @@ package codurance;
 
 import org.junit.jupiter.api.Test;
 
-import java.sql.Time;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +16,7 @@ public class AcceptanceTest {
     void should_add_items_to_shopping_basket() {
         TimeProvider timeProvider = mock(TimeProvider.class);
         when(timeProvider.now()).thenReturn(CURRENT_DATE);
-        var shoppingBasketService = new ShoppingBasketService(new InMemoryProductRepository(), new InMemoryBasketRepository(new HashMap<>(), timeProvider));
+        var shoppingBasketService = new ShoppingBasketService(new InMemoryProductRepository(), new InMemoryBasketRepository(new HashMap<>(), timeProvider), timeProvider);
 
         UserId user = new UserId();
 

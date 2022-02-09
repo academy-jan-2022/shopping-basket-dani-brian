@@ -4,7 +4,7 @@ public class ShoppingBasketService {
     private final ProductRepository productRepository;
     private BasketRepository basketRepository;
 
-    public ShoppingBasketService(ProductRepository inMemoryProductRepository, BasketRepository basketRepository) {
+    public ShoppingBasketService(ProductRepository inMemoryProductRepository, BasketRepository basketRepository, TimeProvider timeProvider) {
         this.basketRepository = basketRepository;
         this.productRepository = inMemoryProductRepository;
     }

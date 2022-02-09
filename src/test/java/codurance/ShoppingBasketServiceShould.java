@@ -9,12 +9,15 @@ import static org.mockito.Mockito.*;
 
 class ShoppingBasketServiceShould {
 
+    public static final String CURRENT_TIME = "2022-01-01";
+
     @Test
     void add_item_to_basket() {
         var productRepository = mock(ProductRepository.class);
         var basketRepository = mock(BasketRepository.class);
+        var timeProvider = mock(TimeProvider.class);
 
-        ShoppingBasketService shoppingBasketService = new ShoppingBasketService(productRepository, basketRepository);
+        ShoppingBasketService shoppingBasketService = new ShoppingBasketService(productRepository, basketRepository, timeProvider);
 
         UserId userId = new UserId();
         ProductId productId = new ProductId(10001);
@@ -23,15 +26,17 @@ class ShoppingBasketServiceShould {
         var product = productRepository.getById(productId);
         when(productRepository.getById(productId)).thenReturn(new Product("The Hobbit", 5, new ProductId(10001)));
 
-        verify(basketRepository).add(new Basket(userId, List.of(new BasketItem(product,1)),""));
+        when(timeProvider.now()).thenReturn(CURRENT_TIME);
+        verify(basketRepository).add(new Basket(userId, List.of(new BasketItem(product, 1)), CURRENT_TIME));
     }
 
     @Test
     void return_basket_for_specific_user() {
         var productRepository = mock(ProductRepository.class);
         var basketRepository = mock(BasketRepository.class);
+        var timeProvider = mock(TimeProvider.class);
 
-        ShoppingBasketService shoppingBasketService = new ShoppingBasketService(productRepository, basketRepository);
+        ShoppingBasketService shoppingBasketService = new ShoppingBasketService(productRepository, basketRepository, timeProvider);
         UserId userId = new UserId();
         shoppingBasketService.basketFor(userId);
         verify(basketRepository).basketFor(userId);
