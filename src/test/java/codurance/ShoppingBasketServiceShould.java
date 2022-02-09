@@ -1,6 +1,8 @@
 package codurance;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 
@@ -27,7 +29,13 @@ class ShoppingBasketServiceShould {
         when(productRepository.getById(productId)).thenReturn(new Product("The Hobbit", 5, new ProductId(10001)));
 
         when(timeProvider.now()).thenReturn(CURRENT_TIME);
-        verify(basketRepository).add(new Basket(userId, List.of(new BasketItem(product, 1)), CURRENT_TIME));
+
+        ArgumentCaptor<Basket> capturedBasket = ArgumentCaptor.forClass(Basket.class);
+        verify(basketRepository).add(capturedBasket.capture());
+
+        var expectedBasket = new Basket(userId, List.of(new BasketItem(product, 1)), CURRENT_TIME);
+
+        Assertions.assertEquals(expectedBasket, capturedBasket.getValue());
     }
 
     @Test
