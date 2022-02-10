@@ -2,7 +2,6 @@ package codurance;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.BiFunction;
 
 public class Basket {
     private final String currentTime;

@@ -63,7 +63,6 @@ class BasketRepositoryShould {
         var product = getHobbit();
 
         int quantity = 3;
-        var basketItem = new BasketItem(product, quantity);
 
         basketRepository.add(userId, product, quantity);
 
