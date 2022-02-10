@@ -15,8 +15,7 @@ class UserIdShould {
 
     @Test
     void create_a_user_with_id_2() {
-        UserId userId = new UserId();
-        UserId userId2 = new UserId();
-        Assertions.assertEquals(2, userId.id());
+        UserId userId2 = new UserId(2);
+        Assertions.assertEquals(2, userId2.id());
     }
 }

@@ -1,7 +1,7 @@
 package codurance;
 
-public class UserId {
-    public int id() {
-        return 1;
+public record UserId(int id) {
+    public UserId(){
+        this(1);
     }
 }

@@ -69,7 +69,7 @@ class BasketRepositoryShould {
         var product = getProduct();
 
         UserId user1 = new UserId();
-        UserId user2 = new UserId();
+        UserId user2 = new UserId(2);
 
         basketRepository.add(user1, product, 1);
         basketRepository.add(user2, product, 1);
