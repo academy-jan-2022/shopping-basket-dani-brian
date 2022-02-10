@@ -32,14 +32,14 @@ public class Basket {
         }
     }
 
+    public void addProduct(BasketItem basketItem) {
+        basketItems.add(basketItem);
+    }
+
     public int getTotal() {
         return basketItems.stream()
             .map(basketItem -> basketItem.quantity() * basketItem.product().price())
             .reduce(0, Integer::sum);
-    }
-
-    public void addProduct(Product product, int quantity) {
-        basketItems.add(new BasketItem(product, quantity));
     }
 
     @Override
@@ -62,9 +62,5 @@ public class Basket {
     @Override
     public int hashCode() {
         return Objects.hash(currentTime, userId, basketItems);
-    }
-
-    public void addProduct(BasketItem basketItem) {
-        throw new UnsupportedOperationException();
     }
 }
