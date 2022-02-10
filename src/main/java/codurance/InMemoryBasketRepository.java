@@ -18,31 +18,23 @@ public class InMemoryBasketRepository implements BasketRepository {
     public void add(UserId userId, Product product, int quantity) {
         String now = timeProvider.now();
 
-        if (baskets.containsKey(userId)) {
-            Basket oldBasket = baskets.get(userId);
-            var basketItem = new BasketItem(product, quantity);
-            oldBasket.addProduct(product,quantity);
-            printItemAdded(userId, basketItem);
-        } else {
-            BasketItem basketItem = new BasketItem(product, quantity);
-            Basket newBasket = new Basket(now, new HashMap<>());
-            newBasket.addProduct(product, quantity);
-            baskets.put(userId, newBasket);
+        if (!baskets.containsKey(userId))
+            logBasketCreated(userId);
 
-            printBasketCreated(userId);
-            printItemAdded(userId, basketItem);
-        }
+        baskets.putIfAbsent(userId, new Basket(now, new HashMap<>()));
+        Basket basket = baskets.get(userId);
+        basket.addProduct(product, quantity);
+        logItemAdded(userId, product, quantity);
     }
 
-    private void printBasketCreated(UserId userId) {
+    private void logBasketCreated(UserId userId) {
         logger.print("[BASKET CREATED]: Created[%s], User[%s]"
             .formatted(timeProvider.now(), userId.id()));
     }
 
-    private void printItemAdded(UserId userId, BasketItem basketItem) {
-        Product product = basketItem.product();
+    private void logItemAdded(UserId userId, Product product, int quantity) {
         logger.print("[ITEM ADDED TO SHOPPING CART]: Added[%s], User[%s], Product[%s], Quantity[%s], Price[<£%s.00>]"
-            .formatted(timeProvider.now(), userId.id(), product.title(), basketItem.quantity(), product.price()));
+            .formatted(timeProvider.now(), userId.id(), product.title(), quantity, product.price()));
     }
 
     @Override

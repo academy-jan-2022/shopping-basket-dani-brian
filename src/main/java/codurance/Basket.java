@@ -1,8 +1,8 @@
 package codurance;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 public class Basket {
     private final String currentTime;
@@ -25,8 +25,9 @@ public class Basket {
             .orElse(0);
     }
 
-    public void addProduct(Product product, int quantity) {
-        items.put(product, items.getOrDefault(product, 0) + quantity);
+    public void addProduct(Product product, int newQuantity) {
+        items.computeIfPresent(product, (p, currentQuantity) -> currentQuantity + newQuantity);
+        items.putIfAbsent(product, newQuantity);
     }
 
     public int getTotal() {
