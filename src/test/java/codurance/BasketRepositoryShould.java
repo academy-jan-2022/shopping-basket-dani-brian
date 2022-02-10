@@ -31,21 +31,21 @@ class BasketRepositoryShould {
     @Test
     void add_basket_to_map() {
         UserId userId = new UserId();
-        basketRepository.add(userId, getProduct(), 2);
+        basketRepository.add(userId, getHobbit(), 2);
 
         assertEquals(1, baskets.entrySet().size());
     }
 
-    private Product getProduct() {
+    private Product getHobbit() {
         return new Product("The Hobbit", 5, new ProductId(10001));
     }
 
     @Test
     void should_add_correct_basket() {
         UserId userId = new UserId();
-        Basket basket = getBasket(userId, getProduct(), 2);
+        Basket basket = getBasket(userId, getHobbit(), 2);
 
-        basketRepository.add(userId, getProduct(), 2);
+        basketRepository.add(userId, getHobbit(), 2);
 
         assertEquals(basket, baskets.get(userId));
     }
@@ -60,7 +60,7 @@ class BasketRepositoryShould {
         Basket basket = mock(Basket.class);
         UserId userId = new UserId();
         baskets.put(userId, basket);
-        var product = getProduct();
+        var product = getHobbit();
 
         basketRepository.add(userId, product, 3);
 
@@ -69,7 +69,7 @@ class BasketRepositoryShould {
 
     @Test
     void create_one_basket_per_user() {
-        var product = getProduct();
+        var product = getHobbit();
 
         UserId user1 = new UserId();
         UserId user2 = new UserId(2);
@@ -95,9 +95,9 @@ class BasketRepositoryShould {
     void create_basket_at_current_time() {
         UserId userId = new UserId();
 
-        var basket = getBasket(userId, getProduct(), 1);
+        var basket = getBasket(userId, getHobbit(), 1);
 
-        basketRepository.add(userId, getProduct(), 1);
+        basketRepository.add(userId, getHobbit(), 1);
 
         assertEquals(basket, basketRepository.basketFor(userId));
     }
@@ -106,7 +106,7 @@ class BasketRepositoryShould {
     void log_basket_created() {
         UserId userId = new UserId();
 
-        basketRepository.add(userId, getProduct(), 1);
+        basketRepository.add(userId, getHobbit(), 1);
 
         verify(loggerMock).print("[BASKET CREATED]: Created[" + CURRENT_DATE + "], User[1]");
     }
@@ -115,9 +115,21 @@ class BasketRepositoryShould {
     void log_item_added() {
         UserId userId = new UserId();
 
-        basketRepository.add(userId, getProduct(), 1);
+        basketRepository.add(userId, getHobbit(), 1);
 
         verify(loggerMock).print(
             "[ITEM ADDED TO SHOPPING CART]: Added[" + CURRENT_DATE + "], User[1], Product[The Hobbit], Quantity[1], Price[<£5.00>]");
+    }
+
+    @Test
+    void only_log_item_added_on_update() {
+        UserId userId = new UserId();
+
+        basketRepository.add(userId, getHobbit(), 1);
+        basketRepository.add(userId, getHobbit(), 1);
+
+        verify(loggerMock).print(
+            "[ITEM ADDED TO SHOPPING CART]: Added[" + CURRENT_DATE + "], User[1], Product[The Hobbit], Quantity[1], Price[<£5.00>]");
+        verify(loggerMock, never()).print("[BASKET CREATED]: Created[" + CURRENT_DATE + "], User[1]");
     }
 }

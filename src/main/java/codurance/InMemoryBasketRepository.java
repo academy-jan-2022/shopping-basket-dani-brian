@@ -24,9 +24,16 @@ public class InMemoryBasketRepository implements BasketRepository {
             String now = timeProvider.now();
             BasketItem basketItem = new BasketItem(product, quantity);
             List<BasketItem> items = new ArrayList<>(List.of(basketItem));
-            logger.print("[BASKET CREATED]: Created[" + now + "], User["
-                + userId.id() + "]");
+            logger.print("[BASKET CREATED]: Created[%s], User[%s]"
+                .formatted(now, userId.id()));
+
+
+            logger.print("[ITEM ADDED TO SHOPPING CART]: Added[%s], User[%s], Product[%s], Quantity[%s], Price[<£%s.00>]"
+                .formatted(now, userId.id(), product.title(), quantity, product.price()));
+
             baskets.put(userId, new Basket(userId, items, now));
+
+
         }
     }
 
