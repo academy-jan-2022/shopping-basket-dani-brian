@@ -31,17 +31,14 @@ public class Basket {
     }
 
     public void addProduct(BasketItem basketItem) {
-        var itemExists = basketItems.stream().filter(item -> Objects.equals(
-            item.product().id(), basketItem.product().id()
-        )).toArray().length > 0;
+        var itemExists = basketItems.stream().filter(item -> item.sameProduct(basketItem)
+        ).toArray().length > 0;
 
         if (itemExists) {
             basketItems = basketItems.stream()
-                .map(item -> {
-                    return Objects.equals(basketItem.product().id(), item.product().id()) ?
-                        new BasketItem(basketItem.product(), basketItem.quantity() + item.quantity())
-                        : item;
-                })
+                .map(item -> Objects.equals(basketItem.product().id(), item.product().id()) ?
+                    new BasketItem(basketItem.product(), basketItem.quantity() + item.quantity())
+                    : item)
                 .toList();
         } else {
             basketItems.add(basketItem);
