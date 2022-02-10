@@ -2,6 +2,7 @@ package codurance;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ class BasketRepositoryShould {
     public static final String CURRENT_TIME = "2022-02-14";
     private Map<UserId, Basket> baskets;
     private InMemoryBasketRepository basketRepository;
+    private Logger loggerMock;
 
     @BeforeEach
     void setUp() {
@@ -22,7 +24,9 @@ class BasketRepositoryShould {
         TimeProvider timeProviderMock = mock(TimeProvider.class);
         when(timeProviderMock.now()).thenReturn(CURRENT_TIME);
 
-        basketRepository = new InMemoryBasketRepository(baskets, timeProviderMock, new Logger());
+        loggerMock = mock(Logger.class);
+
+        basketRepository = new InMemoryBasketRepository(baskets, timeProviderMock, loggerMock);
     }
 
     @Test
@@ -99,5 +103,15 @@ class BasketRepositoryShould {
         assertEquals(basket, basketRepository.basketFor(userId));
     }
 
+    @Test
+    void log_basket_created() {
+        UserId userId = new UserId();
 
+        var basket = getBasket(userId, getProduct(), 1);
+
+        basketRepository.add(userId, getProduct(), 1);
+
+        verify(loggerMock).print("[BASKET CREATED]: Created[" + CURRENT_TIME + "], User[1]");
+
+    }
 }
