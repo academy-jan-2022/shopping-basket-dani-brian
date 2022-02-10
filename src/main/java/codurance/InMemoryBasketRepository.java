@@ -24,15 +24,15 @@ public class InMemoryBasketRepository implements BasketRepository {
             var basketItem = new BasketItem(product, quantity);
             oldBasket.addProduct(basketItem);
 
-            printItemAdded(userId, product, quantity);
+            printItemAdded(userId, basketItem);
         } else {
             BasketItem basketItem = new BasketItem(product, quantity);
             List<BasketItem> items = new ArrayList<>(List.of(basketItem));
 
-            baskets.put(userId, new Basket(userId, items, now));
+            baskets.put(userId, new Basket(items, now));
 
             printBasketCreated(userId);
-            printItemAdded(userId, product, quantity);
+            printItemAdded(userId, basketItem);
         }
     }
 
@@ -41,9 +41,10 @@ public class InMemoryBasketRepository implements BasketRepository {
             .formatted(timeProvider.now(), userId.id()));
     }
 
-    private void printItemAdded(UserId userId, Product product, int quantity) {
+    private void printItemAdded(UserId userId, BasketItem basketItem) {
+        Product product = basketItem.product();
         logger.print("[ITEM ADDED TO SHOPPING CART]: Added[%s], User[%s], Product[%s], Quantity[%s], Price[<£%s.00>]"
-            .formatted(timeProvider.now(), userId.id(), product.title(), quantity, product.price()));
+            .formatted(timeProvider.now(), userId.id(), product.title(), basketItem.quantity(), product.price()));
     }
 
     @Override

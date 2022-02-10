@@ -10,8 +10,7 @@ class BasketShould {
     @Test
     void return_current_date() {
         var expected = "2022-02-14";
-        var basket = new Basket(new UserId(), List.of(), expected);
-
+        var basket = new Basket(List.of(), expected);
         Assertions.assertEquals(expected, basket.getDate());
     }
 
@@ -20,7 +19,7 @@ class BasketShould {
         int expected = 5;
 
         BasketItem basketItem = new BasketItem(new Product("title", 5, new ProductId(100012)), expected);
-        var basket = new Basket(new UserId(), List.of(basketItem), "");
+        var basket = new Basket(List.of(basketItem), "");
 
         Assertions.assertEquals(expected, basket.getQuantity(new ProductId(100012)));
     }
@@ -32,7 +31,7 @@ class BasketShould {
         var product1 = new Product("title", 5, id);
         var product2 = new Product("title2", 6, id2);
         BasketItem basketItem = new BasketItem(product1, 1);
-        var basket = new Basket(new UserId(), new ArrayList<>(List.of(basketItem)), "");
+        var basket = new Basket(new ArrayList<>(List.of(basketItem)), "");
         var basketItem2 = new BasketItem(product2, 1);
         basket.addProduct(basketItem2);
 
@@ -43,7 +42,7 @@ class BasketShould {
     void get_total_amount() {
         BasketItem basketItem1 = new BasketItem(new Product("1", 5, new ProductId(100012)), 10);
         BasketItem basketItem2 = new BasketItem(new Product("2", 7, new ProductId(100013)), 10);
-        var basket = new Basket(new UserId(), List.of(basketItem1, basketItem2), "");
+        var basket = new Basket(List.of(basketItem1, basketItem2), "");
 
         Assertions.assertEquals(120, basket.getTotal());
 

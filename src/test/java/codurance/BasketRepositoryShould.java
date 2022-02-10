@@ -43,16 +43,16 @@ class BasketRepositoryShould {
     @Test
     void should_add_correct_basket() {
         UserId userId = new UserId();
-        Basket basket = getBasket(userId, getHobbit(), 2);
+        Basket basket = getBasket(getHobbit(), 2);
 
         basketRepository.add(userId, getHobbit(), 2);
 
         assertEquals(basket, baskets.get(userId));
     }
 
-    private Basket getBasket(UserId userId, Product product, int productQuantity) {
+    private Basket getBasket(Product product, int productQuantity) {
         var item = new BasketItem(product, productQuantity);
-        return new Basket(userId, List.of(item), CURRENT_DATE);
+        return new Basket(List.of(item), CURRENT_DATE);
     }
 
     @Test
@@ -97,7 +97,7 @@ class BasketRepositoryShould {
     void create_basket_at_current_time() {
         UserId userId = new UserId();
 
-        var basket = getBasket(userId, getHobbit(), 1);
+        var basket = getBasket(getHobbit(), 1);
 
         basketRepository.add(userId, getHobbit(), 1);
 
