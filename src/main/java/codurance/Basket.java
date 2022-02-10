@@ -18,16 +18,12 @@ public class Basket {
     }
 
     public int getQuantity(ProductId productId) {
-        var item = basketItems.stream()
+        return basketItems.stream()
             .filter(basketItem -> basketItem.sameProduct(productId))
-            .findFirst();
+            .findFirst()
+            .map(BasketItem::quantity)
+            .orElse(0);
 
-        if (item.isPresent()) {
-            var basketItem = item.get();
-            return basketItem.quantity();
-        } else {
-            return 0;
-        }
     }
 
     public void addProduct(BasketItem basketItem) {

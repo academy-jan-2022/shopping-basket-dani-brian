@@ -17,10 +17,8 @@ class BasketShould {
     @Test
     void get_quantity() {
         int expected = 5;
-
         BasketItem basketItem = new BasketItem(new Product("title", 5, new ProductId(100012)), expected);
         var basket = new Basket(List.of(basketItem), "");
-
         Assertions.assertEquals(expected, basket.getQuantity(new ProductId(100012)));
     }
 
@@ -44,7 +42,6 @@ class BasketShould {
         var basket = new Basket(new ArrayList<>(List.of(basketItem)), "");
         var basketItem2 = new BasketItem(product2, 1);
         basket.addProduct(basketItem2);
-
         Assertions.assertEquals(1, basket.getQuantity(id2));
     }
 
