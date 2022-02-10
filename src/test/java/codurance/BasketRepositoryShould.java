@@ -2,7 +2,6 @@ package codurance;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +12,7 @@ import static org.mockito.Mockito.*;
 
 class BasketRepositoryShould {
 
-    public static final String CURRENT_TIME = "2022-02-14";
+    public static final String CURRENT_DATE = "2022-02-14";
     private Map<UserId, Basket> baskets;
     private InMemoryBasketRepository basketRepository;
     private Logger loggerMock;
@@ -22,7 +21,7 @@ class BasketRepositoryShould {
     void setUp() {
         baskets = new HashMap<>();
         TimeProvider timeProviderMock = mock(TimeProvider.class);
-        when(timeProviderMock.now()).thenReturn(CURRENT_TIME);
+        when(timeProviderMock.now()).thenReturn(CURRENT_DATE);
 
         loggerMock = mock(Logger.class);
 
@@ -53,7 +52,7 @@ class BasketRepositoryShould {
 
     private Basket getBasket(UserId userId, Product product, int productQuantity) {
         var item = new BasketItem(product, productQuantity);
-        return new Basket(userId, List.of(item), CURRENT_TIME);
+        return new Basket(userId, List.of(item), CURRENT_DATE);
     }
 
     @Test
@@ -107,11 +106,18 @@ class BasketRepositoryShould {
     void log_basket_created() {
         UserId userId = new UserId();
 
-        var basket = getBasket(userId, getProduct(), 1);
+        basketRepository.add(userId, getProduct(), 1);
+
+        verify(loggerMock).print("[BASKET CREATED]: Created[" + CURRENT_DATE + "], User[1]");
+    }
+
+    @Test
+    void log_item_added() {
+        UserId userId = new UserId();
 
         basketRepository.add(userId, getProduct(), 1);
 
-        verify(loggerMock).print("[BASKET CREATED]: Created[" + CURRENT_TIME + "], User[1]");
-
+        verify(loggerMock).print(
+            "[ITEM ADDED TO SHOPPING CART]: Added[" + CURRENT_DATE + "], User[1], Product[The Hobbit], Quantity[1], Price[<£5.00>]");
     }
 }
