@@ -128,8 +128,8 @@ class BasketRepositoryShould {
         basketRepository.add(userId, getHobbit(), 1);
         basketRepository.add(userId, getHobbit(), 1);
 
-        verify(loggerMock).print(
+        verify(loggerMock, times(2)).print(
             "[ITEM ADDED TO SHOPPING CART]: Added[" + CURRENT_DATE + "], User[1], Product[The Hobbit], Quantity[1], Price[<£5.00>]");
-        verify(loggerMock, never()).print("[BASKET CREATED]: Created[" + CURRENT_DATE + "], User[1]");
+        verify(loggerMock, times(1)).print("[BASKET CREATED]: Created[" + CURRENT_DATE + "], User[1]");
     }
 }

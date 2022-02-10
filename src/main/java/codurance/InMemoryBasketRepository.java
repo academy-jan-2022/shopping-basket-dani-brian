@@ -17,11 +17,14 @@ public class InMemoryBasketRepository implements BasketRepository {
 
     @Override
     public void add(UserId userId, Product product, int quantity) {
+        String now = timeProvider.now();
+
         if (baskets.containsKey(userId)) {
             Basket oldBasket = baskets.get(userId);
+            logger.print("[ITEM ADDED TO SHOPPING CART]: Added[%s], User[%s], Product[%s], Quantity[%s], Price[<£%s.00>]"
+                .formatted(now, userId.id(), product.title(), quantity, product.price()));
             oldBasket.addProduct(product, quantity);
         } else {
-            String now = timeProvider.now();
             BasketItem basketItem = new BasketItem(product, quantity);
             List<BasketItem> items = new ArrayList<>(List.of(basketItem));
             logger.print("[BASKET CREATED]: Created[%s], User[%s]"
@@ -32,7 +35,6 @@ public class InMemoryBasketRepository implements BasketRepository {
                 .formatted(now, userId.id(), product.title(), quantity, product.price()));
 
             baskets.put(userId, new Basket(userId, items, now));
-
 
         }
     }
