@@ -36,7 +36,7 @@ public class Basket {
         if (itemExists) {
             basketItems = basketItems.stream()
                 .map(item -> item.sameProduct(basketItem) ?
-                    new BasketItem(basketItem.product(), basketItem.quantity() + item.quantity())
+                    item.updateQuantity(basketItem)
                     : item)
                 .toList();
         } else {
