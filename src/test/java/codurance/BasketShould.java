@@ -25,6 +25,16 @@ class BasketShould {
     }
 
     @Test
+    void update_existing_product_in_basket() {
+        ProductId id = new ProductId(1);
+        var product1 = new Product("title", 5, id);
+        BasketItem basketItem = new BasketItem(product1, 1);
+        var basket = new Basket(new ArrayList<>(List.of(basketItem)), "");
+        basket.addProduct(basketItem);
+        Assertions.assertEquals(2, basket.getQuantity(id));
+    }
+
+    @Test
     void add_second_item_to_existing_basket() {
         ProductId id = new ProductId(1);
         ProductId id2 = new ProductId(2);
@@ -45,7 +55,5 @@ class BasketShould {
         var basket = new Basket(List.of(basketItem1, basketItem2), "");
 
         Assertions.assertEquals(120, basket.getTotal());
-
-
     }
 }
