@@ -33,7 +33,8 @@ class BasketShould {
         var product2 = new Product("title2", 6, id2);
         BasketItem basketItem = new BasketItem(product1, 1);
         var basket = new Basket(new UserId(), new ArrayList<>(List.of(basketItem)), "");
-        basket.addProduct(product2, 1);
+        var basketItem2 = new BasketItem(product2, 1);
+        basket.addProduct(basketItem2);
 
         Assertions.assertEquals(1, basket.getQuantity(id2));
     }

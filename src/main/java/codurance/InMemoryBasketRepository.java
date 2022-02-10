@@ -21,7 +21,8 @@ public class InMemoryBasketRepository implements BasketRepository {
 
         if (baskets.containsKey(userId)) {
             Basket oldBasket = baskets.get(userId);
-            oldBasket.addProduct(product, quantity);
+            var basketItem = new BasketItem(product, quantity);
+            oldBasket.addProduct(basketItem);
 
             printItemAdded(userId, product, quantity);
         } else {

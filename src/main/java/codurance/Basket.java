@@ -65,6 +65,6 @@ public class Basket {
     }
 
     public void addProduct(BasketItem basketItem) {
-
+        throw new UnsupportedOperationException();
     }
 }
