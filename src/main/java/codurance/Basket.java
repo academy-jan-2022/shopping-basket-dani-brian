@@ -19,7 +19,7 @@ public class Basket {
 
     public int getQuantity(ProductId productId) {
         var item = basketItems.stream()
-            .filter(basketItem -> Objects.equals(basketItem.product().id(), productId))
+            .filter(basketItem -> basketItem.sameProduct(productId))
             .findFirst();
 
         if (item.isPresent()) {
@@ -31,11 +31,12 @@ public class Basket {
     }
 
     public void addProduct(BasketItem basketItem) {
-        var itemExists = basketItems.stream().filter(item -> item.sameProduct(basketItem)).toArray().length > 0;
+        var productId = basketItem.product().id();
+        var itemExists = basketItems.stream().anyMatch(item -> item.sameProduct(productId));
 
         if (itemExists) {
             basketItems = basketItems.stream()
-                .map(item -> item.sameProduct(basketItem) ?
+                .map(item -> item.sameProduct(productId) ?
                     item.updateQuantity(basketItem)
                     : item)
                 .toList();
