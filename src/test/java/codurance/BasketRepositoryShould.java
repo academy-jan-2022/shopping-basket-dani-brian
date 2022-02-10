@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,8 +50,9 @@ class BasketRepositoryShould {
     }
 
     private Basket getBasket(Product product, int productQuantity) {
-        var item = new BasketItem(product, productQuantity);
-        return new Basket(List.of(item), CURRENT_DATE);
+        Basket basket = new Basket(CURRENT_DATE, new HashMap<>());
+        basket.addProduct(product,productQuantity);
+        return basket;
     }
 
     @Test
@@ -62,11 +62,12 @@ class BasketRepositoryShould {
         baskets.put(userId, basket);
         var product = getHobbit();
 
-        var basketItem = new BasketItem(product, 3);
+        int quantity = 3;
+        var basketItem = new BasketItem(product, quantity);
 
-        basketRepository.add(userId, product, 3);
+        basketRepository.add(userId, product, quantity);
 
-        verify(basket).addProduct(basketItem);
+        verify(basket).addProduct(product, quantity);
     }
 
     @Test

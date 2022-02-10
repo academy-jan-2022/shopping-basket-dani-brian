@@ -1,16 +1,16 @@
 package codurance;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.function.BiFunction;
 
 public class Basket {
     private final String currentTime;
-    private List<BasketItem> basketItems;
+    private final Map<Product, Integer> items;
 
-    public Basket(List<BasketItem> basketItems, String currentTime) {
-        this.basketItems = basketItems;
+    public Basket(String currentTime, Map<Product, Integer> items) {
         this.currentTime = currentTime;
+        this.items = items;
     }
 
     public String getDate() {
@@ -18,32 +18,20 @@ public class Basket {
     }
 
     public int getQuantity(ProductId productId) {
-        return basketItems.stream()
-            .filter(basketItem -> basketItem.sameProduct(productId))
+        return items.entrySet().stream()
+            .filter(item -> item.getKey().id().equals(productId))
             .findFirst()
-            .map(BasketItem::quantity)
+            .map(Map.Entry::getValue)
             .orElse(0);
-
     }
 
-    public void addProduct(BasketItem basketItem) {
-        var productId = basketItem.product().id();
-        var itemExists = basketItems.stream().anyMatch(item -> item.sameProduct(productId));
-
-        if (itemExists) {
-            basketItems = basketItems.stream()
-                .map(item -> item.sameProduct(productId) ?
-                    item.updateQuantity(basketItem)
-                    : item)
-                .toList();
-        } else {
-            basketItems.add(basketItem);
-        }
+    public void addProduct(Product product, int quantity) {
+        items.put(product, items.getOrDefault(product, 0) + quantity);
     }
 
     public int getTotal() {
-        return basketItems.stream()
-            .map(basketItem -> basketItem.quantity() * basketItem.product().price())
+        return items.entrySet().stream()
+            .map(item -> item.getValue() * item.getKey().price())
             .reduce(0, Integer::sum);
     }
 
@@ -52,19 +40,18 @@ public class Basket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Basket basket = (Basket) o;
-        return Objects.equals(currentTime, basket.currentTime) && Objects.equals(basketItems, basket.basketItems);
+        return Objects.equals(currentTime, basket.currentTime);
     }
 
     @Override
     public String toString() {
         return "Basket{" +
             "currentTime='" + currentTime + '\'' +
-            ", basketItems=" + basketItems +
             '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(currentTime, basketItems);
+        return Objects.hash(currentTime);
     }
 }

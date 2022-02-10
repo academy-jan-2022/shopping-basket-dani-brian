@@ -1,7 +1,6 @@
 package codurance;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 public class InMemoryBasketRepository implements BasketRepository {
@@ -22,14 +21,13 @@ public class InMemoryBasketRepository implements BasketRepository {
         if (baskets.containsKey(userId)) {
             Basket oldBasket = baskets.get(userId);
             var basketItem = new BasketItem(product, quantity);
-            oldBasket.addProduct(basketItem);
-
+            oldBasket.addProduct(product,quantity);
             printItemAdded(userId, basketItem);
         } else {
             BasketItem basketItem = new BasketItem(product, quantity);
-            List<BasketItem> items = new ArrayList<>(List.of(basketItem));
-
-            baskets.put(userId, new Basket(items, now));
+            Basket newBasket = new Basket(now, new HashMap<>());
+            newBasket.addProduct(product, quantity);
+            baskets.put(userId, newBasket);
 
             printBasketCreated(userId);
             printItemAdded(userId, basketItem);
