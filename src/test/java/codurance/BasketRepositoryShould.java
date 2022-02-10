@@ -62,9 +62,11 @@ class BasketRepositoryShould {
         baskets.put(userId, basket);
         var product = getHobbit();
 
+        var basketItem = new BasketItem(product, 3);
+
         basketRepository.add(userId, product, 3);
 
-        verify(basket).addProduct(product, 3);
+        verify(basket).addProduct(basketItem);
     }
 
     @Test

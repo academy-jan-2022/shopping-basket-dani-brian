@@ -21,21 +21,28 @@ public class InMemoryBasketRepository implements BasketRepository {
 
         if (baskets.containsKey(userId)) {
             Basket oldBasket = baskets.get(userId);
-            logger.print("[ITEM ADDED TO SHOPPING CART]: Added[%s], User[%s], Product[%s], Quantity[%s], Price[<£%s.00>]"
-                .formatted(now, userId.id(), product.title(), quantity, product.price()));
             oldBasket.addProduct(product, quantity);
+
+            printItemAdded(userId, product, quantity);
         } else {
             BasketItem basketItem = new BasketItem(product, quantity);
             List<BasketItem> items = new ArrayList<>(List.of(basketItem));
-            logger.print("[BASKET CREATED]: Created[%s], User[%s]"
-                .formatted(now, userId.id()));
-
-
-            logger.print("[ITEM ADDED TO SHOPPING CART]: Added[%s], User[%s], Product[%s], Quantity[%s], Price[<£%s.00>]"
-                .formatted(now, userId.id(), product.title(), quantity, product.price()));
 
             baskets.put(userId, new Basket(userId, items, now));
+
+            printBasketCreated(userId);
+            printItemAdded(userId, product, quantity);
         }
+    }
+
+    private void printBasketCreated(UserId userId) {
+        logger.print("[BASKET CREATED]: Created[%s], User[%s]"
+            .formatted(timeProvider.now(), userId.id()));
+    }
+
+    private void printItemAdded(UserId userId, Product product, int quantity) {
+        logger.print("[ITEM ADDED TO SHOPPING CART]: Added[%s], User[%s], Product[%s], Quantity[%s], Price[<£%s.00>]"
+            .formatted(timeProvider.now(), userId.id(), product.title(), quantity, product.price()));
     }
 
     @Override
