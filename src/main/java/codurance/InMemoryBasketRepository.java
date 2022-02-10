@@ -7,10 +7,12 @@ import java.util.Map;
 public class InMemoryBasketRepository implements BasketRepository {
     private final Map<UserId, Basket> baskets;
     private final TimeProvider timeProvider;
+    private final Logger logger;
 
     public InMemoryBasketRepository(Map<UserId, Basket> baskets, TimeProvider timeProvider, Logger logger) {
         this.baskets = baskets;
         this.timeProvider = timeProvider;
+        this.logger = logger;
     }
 
     @Override
@@ -19,9 +21,12 @@ public class InMemoryBasketRepository implements BasketRepository {
             Basket oldBasket = baskets.get(userId);
             oldBasket.addProduct(product, quantity);
         } else {
+            String now = timeProvider.now();
             BasketItem basketItem = new BasketItem(product, quantity);
             List<BasketItem> items = new ArrayList<>(List.of(basketItem));
-            baskets.put(userId, new Basket(userId, items, timeProvider.now()));
+            logger.print("[BASKET CREATED]: Created[" + now + "], User["
+                + userId.id() + "]");
+            baskets.put(userId, new Basket(userId, items, now));
         }
     }
 
