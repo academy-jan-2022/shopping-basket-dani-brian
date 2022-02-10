@@ -63,4 +63,8 @@ public class Basket {
     public int hashCode() {
         return Objects.hash(currentTime, userId, basketItems);
     }
+
+    public void addProduct(BasketItem basketItem) {
+
+    }
 }
