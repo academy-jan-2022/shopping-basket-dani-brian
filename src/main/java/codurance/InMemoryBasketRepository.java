@@ -35,7 +35,6 @@ public class InMemoryBasketRepository implements BasketRepository {
                 .formatted(now, userId.id(), product.title(), quantity, product.price()));
 
             baskets.put(userId, new Basket(userId, items, now));
-
         }
     }
 
